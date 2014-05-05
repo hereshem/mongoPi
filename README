@@ -1,6 +1,39 @@
-MongoDB README
-
-Welcome to MongoDB!
+MongoDB installation steps for Raspberry Pi
+-------------------------------------------
+* Update your system to newest version :
+  > sudo apt-get update
+* Install required libraries :
+  > sudo apt-get install build-essential libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev scons libboost-all-dev python-pymongo git
+* Clone mongodbPi repo
+  > git clone https://github.com/hereshem/mongoPi.git
+* Goto the directory
+  > cd mongoPi
+* Run scons (this may take several hours) :
+  > sudo scons
+* Run the installation codes (once again it also take few hours) :
+  > sudo scons --prefix=/opt/mongo install
+* Permissions for users and groups : 
+  > sudo adduser --firstuid 100 --ingroup nogroup --shell /etc/false --disabled-password --gecos "" --no-create-home mongodb
+* A folder for our log files to go : 
+  > sudo mkdir /var/log/mongodb/
+* Permissions for log file :
+  > sudo chown mongodb:nogroup /var/log/mongodb/
+* A folder for our state data :
+  > sudo mkdir /var/lib/mongodb
+* Permissions for the folder : 
+  > sudo chown mongodb:nogroup /var/lib/mongodb
+* Moving our init.d script to etc:
+  > sudo cp debian/init.d /etc/init.d/mongod
+* Moving our config file to etc:
+  > sudo cp debian/mongodb.conf /etc/
+* Linking folders up:
+  > sudo ln -s /opt/mongo/bin/mongod /usr/bin/mongod
+* Make sure the init.d script is executable and complete the installation:
+  > sudo chmod u+x /etc/init.d/mongod
+  > sudo update-rc.d mongod defaults
+* We can now start MongoDB using the following command:
+  > sudo /etc/init.d/mongod start
+    
 
 COMPONENTS
 
@@ -17,34 +50,3 @@ UTILITIES
   mongofiles        - Utility for putting and getting files from MongoDB GridFS
   mongostat         - Show performance statistics
 
-INSTALLING
-  1. Update your system into newest version :
-    sudo apt-get update
-  2. Install required libraries :
-    sudo apt-get install build-essential libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev scons libboost-all-dev python-pymongo git
-  3. Run scons (this may take several hours) :
-    sudo scons
-  4. Run the installation codes (once again it also take few hours) :
-    sudo scons --prefix=/opt/mongo install
-  5. Permissions for users and groups : 
-    sudo adduser --firstuid 100 --ingroup nogroup --shell /etc/false --disabled-password --gecos "" --no-create-home mongodb
-  6. A folder for our log files to go : 
-    sudo mkdir /var/log/mongodb/
-  7. Permissions for log file :
-    sudo chown mongodb:nogroup /var/log/mongodb/
-  8. A folder for our state data :
-    sudo mkdir /var/lib/mongodb
-  9. Permissions for the folder : 
-    sudo chown mongodb:nogroup /var/lib/mongodb
-  10. Moving our init.d script to etc:
-    sudo cp debian/init.d /etc/init.d/mongod
-  11. Moving our config file to etc:
-    sudo cp debian/mongodb.conf /etc/
-  12. Linking folders up:
-    sudo ln -s /opt/mongo/bin/mongod /usr/bin/mongod
-  13. Make sure the init.d script is executable and complete the installation:
-    sudo chmod u+x /etc/init.d/mongod
-    sudo update-rc.d mongod defaults
-  14. We can now start MongoDB using the following command:
-    sudo /etc/init.d/mongod start
-    
