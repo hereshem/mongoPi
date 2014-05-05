@@ -17,50 +17,34 @@ UTILITIES
   mongofiles        - Utility for putting and getting files from MongoDB GridFS
   mongostat         - Show performance statistics
 
-BUILDING
-      
-  See docs/building.md, also www.mongodb.org search for "Building".
-
-RUNNING
-
-  For command line options invoke:
-
-    $ ./mongod --help
-
-  To run a single server database:
-
-    $ mkdir /data/db
-    $ ./mongod
-    $
-    $ # The mongo javascript shell connects to localhost and test database by default:
-    $ ./mongo 
-    > help
-
-DRIVERS
-
-  Client drivers for most programming languages are available at mongodb.org.  Use the 
-  shell ("mongo") for administrative tasks.
-
-DOCUMENTATION
-
-  http://www.mongodb.org/
-
-MAIL LISTS AND IRC
-
-  http://www.mongodb.org/display/DOCS/Community
-
-32 BIT BUILD NOTES
-
-  MongoDB uses memory mapped files.  If built as a 32 bit executable, you will
-  not be able to work with large (multi-gigabyte) databases.  However, 32 bit
-  builds work fine with small development databases.
-
-LICENSE
-
-  Most MongoDB source files are made available under the terms of the
-  GNU Affero General Public License (AGPL).  See individual files for
-  details.
-
-  As an exception, the files in the client/, debian/, rpm/,
-  utils/mongoutils, and all subdirectories thereof are made available under
-  the terms of the Apache License, version 2.0.
+INSTALLING
+  1. Update your system into newest version :
+    sudo apt-get update
+  2. Install required libraries :
+    sudo apt-get install build-essential libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev scons libboost-all-dev python-pymongo git
+  3. Run scons (this may take several hours) :
+    sudo scons
+  4. Run the installation codes (once again it also take few hours) :
+    sudo scons --prefix=/opt/mongo install
+  5. Permissions for users and groups : 
+    sudo adduser --firstuid 100 --ingroup nogroup --shell /etc/false --disabled-password --gecos "" --no-create-home mongodb
+  6. A folder for our log files to go : 
+    sudo mkdir /var/log/mongodb/
+  7. Permissions for log file :
+    sudo chown mongodb:nogroup /var/log/mongodb/
+  8. A folder for our state data :
+    sudo mkdir /var/lib/mongodb
+  9. Permissions for the folder : 
+    sudo chown mongodb:nogroup /var/lib/mongodb
+  10. Moving our init.d script to etc:
+    sudo cp debian/init.d /etc/init.d/mongod
+  11. Moving our config file to etc:
+    sudo cp debian/mongodb.conf /etc/
+  12. Linking folders up:
+    sudo ln -s /opt/mongo/bin/mongod /usr/bin/mongod
+  13. Make sure the init.d script is executable and complete the installation:
+    sudo chmod u+x /etc/init.d/mongod
+    sudo update-rc.d mongod defaults
+  14. We can now start MongoDB using the following command:
+    sudo /etc/init.d/mongod start
+    
