@@ -1,39 +1,42 @@
 MongoDB installation steps for Raspberry Pi
 -------------------------------------------
+
+
 * Update your system to newest version :
-  > sudo apt-get update
+> sudo apt-get update
 * Install required libraries :
-  > sudo apt-get install build-essential libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev scons libboost-all-dev python-pymongo git
+> sudo apt-get install build-essential libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev scons libboost-all-dev python-pymongo git
 * Clone mongodbPi repo
-  > git clone https://github.com/hereshem/mongoPi.git
+> git clone https://github.com/hereshem/mongoPi.git
 * Goto the directory
-  > cd mongoPi
+> cd mongoPi
 * Run scons (this may take several hours) :
-  > sudo scons
+> sudo scons
 * Run the installation codes (once again it also take few hours) :
-  > sudo scons --prefix=/opt/mongo install
+> sudo scons --prefix=/opt/mongo install
 * Permissions for users and groups : 
-  > sudo adduser --firstuid 100 --ingroup nogroup --shell /etc/false --disabled-password --gecos "" --no-create-home mongodb
+> sudo adduser --firstuid 100 --ingroup nogroup --shell /etc/false --disabled-password --gecos "" --no-create-home mongodb
 * A folder for our log files to go : 
-  > sudo mkdir /var/log/mongodb/
+> sudo mkdir /var/log/mongodb/
 * Permissions for log file :
-  > sudo chown mongodb:nogroup /var/log/mongodb/
+> sudo chown mongodb:nogroup /var/log/mongodb/
 * A folder for our state data :
-  > sudo mkdir /var/lib/mongodb
+> sudo mkdir /var/lib/mongodb
 * Permissions for the folder : 
-  > sudo chown mongodb:nogroup /var/lib/mongodb
+> sudo chown mongodb:nogroup /var/lib/mongodb
 * Moving our init.d script to etc:
-  > sudo cp debian/init.d /etc/init.d/mongod
+> sudo cp debian/init.d /etc/init.d/mongod
 * Moving our config file to etc:
-  > sudo cp debian/mongodb.conf /etc/
+> sudo cp debian/mongodb.conf /etc/
 * Linking folders up:
-  > sudo ln -s /opt/mongo/bin/mongod /usr/bin/mongod
-* Make sure the init.d script is executable and complete the installation:
-  > sudo chmod u+x /etc/init.d/mongod
-  > sudo update-rc.d mongod defaults
+> sudo ln -s /opt/mongo/bin/mongod /usr/bin/mongod
+* Make sure the init.d script is executable and complete the installation
+> sudo chmod u+x /etc/init.d/mongod
+> sudo update-rc.d mongod defaults
 * We can now start MongoDB using the following command:
-  > sudo /etc/init.d/mongod start
+> sudo /etc/init.d/mongod start
     
+
 
 COMPONENTS
 
@@ -50,3 +53,4 @@ UTILITIES
   mongofiles        - Utility for putting and getting files from MongoDB GridFS
   mongostat         - Show performance statistics
 
+Reference : http://c-mobberley.com/wordpress/2013/10/14/raspberry-pi-mongodb-installation-the-working-guide/
